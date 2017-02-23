@@ -17,29 +17,77 @@
                     <span class="text">{{seller.supports[0].description}}</span>
                 </div>
             </div>
+            <div v-if="seller.supports" class="support-count">
+                <span class="count" @click="showDetail()">{{seller.supports.length}}个</span>
+                <i class="icon-keyboard_arrow_right"></i>
+            </div>
+        </div>
+        <div class="bulletin-wrapper" @click="showDetail()">
+            <span class="bulletin-title"></span><span class="bulletin-text">{{seller.bulletin}}</span>
+            <i class="icon-keyboard_arrow_right"></i>
+        </div>
+        <div class="background">
+            <img :src="seller.avatar" width="100%" height="100%">
+        </div>
+        <div class="detail" v-show="detailShow">
+            <div class="detail-wrapper clearfix">
+                <div class="detail-main">
+                    <h1 class="name">{{seller.name}}</h1>
+                    <div class="star-wrapper">
+                        <star :size='48' :score="seller.score"></star>
+                    </div>
+                    <v-title message="优惠信息"></v-title>
+                </div>
+            </div>
+            <div class="detail-close">
+                <i class="icon-close" @click="closeDetail()"></i>
+            </div>
         </div>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
+    import star from 'components/star/star';
+    import title from 'components/title/title';
     export default {
         props: {
             seller: {
                 type: Object
             }
         },
+        data() {
+            return {
+                detailShow: false
+            };
+        },
+        methods: {
+            showDetail() {
+                this.detailShow = true;
+            },
+            closeDetail() {
+                this.detailShow = false;
+            }
+        },
         created() {
             this.classMap = ['decrease', 'discount', 'guarantee', 'invoice', 'special'];
+        },
+        components: {
+            star,
+            'v-title': title
         }
     };
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
     @import "../../common/stylus/mixin.styl"
+
     #header
         color: #fff
-        background: #000
+        position: relative
+        background: rgba(7, 17, 27, 0.5)
+        overflow: hidden
         .content-wrapper
+            position: relative
             font-size: 0px
             padding: 24px 12px 18px 24px
             .avatar
@@ -91,5 +139,92 @@
                     .text
                         line-height: 12px
                         font-size 10px
-                        
+
+            .support-count
+                position: absolute
+                right: 12px
+                bottom: 14px
+                padding: 0 8px
+                height: 24px
+                line-height: 24px
+                border-radius: 14px
+                background: rgba(0, 0, 0, 0.2)
+                text-align center
+            .count
+                font-size: 10px
+            .icon-keyboard_arrow_right
+                vertical-align: top
+                font-size: 10px
+                line-height: 24px
+                margin-left: 2px
+
+        .bulletin-wrapper
+            height: 28px
+            line-height: 28px
+            padding: 0 22px 0 12px;
+            white-space: nowrap
+            overflow: hidden
+            -ms-text-overflow: ellipsis
+            text-overflow: ellipsis
+            /*font-size:0*/
+            position: relative
+            background: rgba(7, 17, 27, 0.2)
+            .bulletin-title
+                display: inline-block
+                width: 22px
+                height: 12px
+                bg-image('bulletin')
+                background-size: 22px 12px
+                background-repeat: no-repeat
+            .bulletin-text
+                vertical-align: top
+                font-size: 10px
+                margin: 0 4px
+            .icon-keyboard_arrow_right
+                position: absolute
+                font-size: 10px
+                right: 12px
+                top: 8px
+
+        .background
+            position: absolute
+            top: 0
+            left: 0
+            height: 100%
+            width: 100%
+            z-index: -1
+            filter: blur(5px)
+        .detail
+            position: fixed
+            top: 0
+            left: 0
+            z-index: 100
+            height: 100%
+            width: 100%
+            background: rgba(7, 17, 27, 0.8)
+            overflow: auto
+            .detail-wrapper
+                min-height: 100%
+                width: 100%
+                .detail-main
+                    margin-top: 64px
+                    padding-bottom: 64px
+                    .name
+                        text-align: center
+                        font-weight: 700
+                        font-size: 16px
+                        line-height: 16px
+                    .star-wrapper
+                        margin-top: 18px
+                        padding: 2px 0
+                        text-align: center
+            .detail-close
+                position: relative
+                margin: -64px auto 0 auto
+                font-size: 32px
+                width: 32px
+                height: 32px
+                clear: both
+
+
 </style>
