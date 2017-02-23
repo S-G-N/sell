@@ -55,7 +55,7 @@
             text-align: center
             & > a
                 display: block
-                font-size 24px
+                font-size: 14px
                 color: rgb(77, 85, 93)
                 &.focus
                     color: rgb(200, 85, 93)

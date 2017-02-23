@@ -7,7 +7,7 @@
             <div class="content">
                 <div class="title">
                     <span class="brand"></span>
-                    <span class="name">{{seller.name}}</span>
+                    <span class="name" >{{seller.name}}</span>
                 </div>
                 <div class="description">
                     {{seller.description}}/{{seller.deliveryTime}}分钟送达
@@ -29,14 +29,24 @@
         <div class="background">
             <img :src="seller.avatar" width="100%" height="100%">
         </div>
-        <div class="detail" v-show="detailShow">
-            <div class="detail-wrapper clearfix">
+        <div class="detail" v-show="detailShow" transition="fade">
+            <div class="detail-wrapper clearfix" >
                 <div class="detail-main">
-                    <h1 class="name">{{seller.name}}</h1>
+                    <h1 class="name" >{{seller.name}}</h1>
                     <div class="star-wrapper">
                         <star :size='48' :score="seller.score"></star>
                     </div>
                     <v-title message="优惠信息"></v-title>
+                    <ul class="supports" v-if="seller.supports">
+                        <li class="supports-item" v-for="item in seller.supports">
+                            <span class="icon" :class="classMap[seller.supports[$index].type]"></span>
+                            <span class="text">{{seller.supports[$index].description}}</span>
+                        </li>
+                    </ul>
+                    <v-title message="商家公告"></v-title>
+                    <div class="bulletin">
+                        <p class="content">{{seller.bulletin}}</p>
+                    </div>
                 </div>
             </div>
             <div class="detail-close">
@@ -201,8 +211,15 @@
             z-index: 100
             height: 100%
             width: 100%
-            background: rgba(7, 17, 27, 0.8)
             overflow: auto
+            transition: all 0.5s
+            backdrop-filter: blur(10px)
+            &.fade-transition
+                opacity: 1
+                background: rgba(7, 17, 27, 0.8)
+            &.fade-enter, &.fade-leave
+                opacity: 0
+                background: rgba(7, 17, 27, 0)
             .detail-wrapper
                 min-height: 100%
                 width: 100%
@@ -218,6 +235,43 @@
                         margin-top: 18px
                         padding: 2px 0
                         text-align: center
+                    .supports
+                        width: 80%
+                        margin: 24px auto 28px auto
+                        .supports-item
+                            padding: 0 12px
+                            margin-bottom: 12px
+                            font-size: 0
+                            &:last-child
+                                margin-bottom: 0
+                            .icon
+                                display: inline-block
+                                width: 16px
+                                height: 16px
+                                vertical-align: top
+                                margin-right: 6px
+                                background-size 16px 16px
+                                background-repeat: no-repeat
+                                &.decrease
+                                    bg-image('decrease_2')
+                                &.discount
+                                    bg-image('discount_2')
+                                &.guarantee
+                                    bg-image('guarantee_2')
+                                &.invoice
+                                    bg-image('invoice_2')
+                                &.special
+                                    bg-image('special_2')
+                            .text
+                                font-size: 12px
+                                line-height: 16px
+                    .bulletin
+                        width: 80%
+                        margin: 0 auto
+                        .content
+                            padding: 0 12px
+                            line-height: 24px
+                            font-size: 12px
             .detail-close
                 position: relative
                 margin: -64px auto 0 auto
