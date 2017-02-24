@@ -1,3 +1,10 @@
+<!--Created in 2017/2/23 by su
+eg:
+<star :size='48' :score="seller.score"></star>
+param:
+size:star height(px)
+type:score(number)
+-->
 <template>
     <div class="star" :class="starType">
         <span v-for="itemClass in itemClasses" :class="itemClass" class="star-item" track-by="$index"></span>

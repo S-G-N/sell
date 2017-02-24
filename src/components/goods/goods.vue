@@ -29,10 +29,10 @@
         created(){
             this.$http.get('/api/goods').then((res) => {
                 res = res.body;
-                console.log(res);
+//                console.log(res);
                 if (res.errno === ERR_OK) {
                     this.goods = res.data;
-                    console.log(this.goods);
+//                    console.log(this.goods);
                 }
             });
         }
