@@ -1,14 +1,20 @@
+<!--Created in 2017/2/23 by su
+eg:
+<v-title msg="商家公告"></v-title>
+param:
+mag:title
+-->
 <template>
     <div id="title" track-by="$index">
         <div class="line"></div>
-        <div class="text" >优惠信息</div>
+        <div class="text">{{msg}}</div>
         <div class="line"></div>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
     export default {
-//        porps: ['message']
+        props: ['msg']
     };
 </script>
 

@@ -1,19 +1,21 @@
 <template>
     <div id="header">
         <div class="content-wrapper">
+
             <div class="avatar">
                 <img width="64" height="64" :src="seller.avatar" alt="">
             </div>
             <div class="content">
                 <div class="title">
                     <span class="brand"></span>
-                    <span class="name" >{{seller.name}}</span>
+                    <span class="name">{{seller.name}}</span>
                 </div>
                 <div class="description">
                     {{seller.description}}/{{seller.deliveryTime}}分钟送达
                 </div>
                 <div v-if="seller.supports" class="supports">
-                    <span class="icon" :class="classMap[seller.supports[0].type]"></span>
+                    <!--<span class="icon" :class="classMap[seller.supports[0].type]"></span>-->
+                    <v-icon :size="12" :type="seller.supports[0].type"></v-icon>
                     <span class="text">{{seller.supports[0].description}}</span>
                 </div>
             </div>
@@ -30,20 +32,21 @@
             <img :src="seller.avatar" width="100%" height="100%">
         </div>
         <div class="detail" v-show="detailShow" transition="fade">
-            <div class="detail-wrapper clearfix" >
+            <div class="detail-wrapper clearfix">
                 <div class="detail-main">
-                    <h1 class="name" >{{seller.name}}</h1>
+                    <h1 class="name">{{seller.name}}</h1>
                     <div class="star-wrapper">
                         <star :size='48' :score="seller.score"></star>
                     </div>
-                    <v-title message="优惠信息"></v-title>
+                    <v-title msg="优惠信息"></v-title>
                     <ul class="supports" v-if="seller.supports">
                         <li class="supports-item" v-for="item in seller.supports">
-                            <span class="icon" :class="classMap[seller.supports[$index].type]"></span>
+                            <!--<span class="icon" :class="classMap[seller.supports[$index].type]"></span>-->
+                            <v-icon :size="16" :type="seller.supports[$index].type"></v-icon>
                             <span class="text">{{seller.supports[$index].description}}</span>
                         </li>
                     </ul>
-                    <v-title message="商家公告"></v-title>
+                    <v-title msg="商家公告"></v-title>
                     <div class="bulletin">
                         <p class="content">{{seller.bulletin}}</p>
                     </div>
@@ -59,6 +62,7 @@
 <script type="text/ecmascript-6">
     import star from 'components/star/star';
     import title from 'components/title/title';
+    import icon from 'components/icon/icon';
     export default {
         props: {
             seller: {
@@ -78,12 +82,10 @@
                 this.detailShow = false;
             }
         },
-        created() {
-            this.classMap = ['decrease', 'discount', 'guarantee', 'invoice', 'special'];
-        },
         components: {
             star,
-            'v-title': title
+            'v-title': title,
+            'v-icon': icon
         }
     };
 </script>
@@ -128,24 +130,6 @@
                     line-height: 12px
                     font-size: 12px
                 .supports
-                    .icon
-                        display: inline-block
-                        width: 12px
-                        height: 12px
-                        margin-right: 4px
-                        background-size: 12px 12px
-                        background-repeat: no-repeat
-                        vertical-align: top
-                        &.decrease
-                            bg-image('decrease_1')
-                        &.discount
-                            bg-image('discount_1')
-                        &.guarantee
-                            bg-image('guarantee_1')
-                        &.invoice
-                            bg-image('invoice_1')
-                        &.special
-                            bg-image('special_1')
                     .text
                         line-height: 12px
                         font-size 10px
@@ -245,23 +229,10 @@
                             &:last-child
                                 margin-bottom: 0
                             .icon
-                                display: inline-block
                                 width: 16px
                                 height: 16px
-                                vertical-align: top
                                 margin-right: 6px
                                 background-size 16px 16px
-                                background-repeat: no-repeat
-                                &.decrease
-                                    bg-image('decrease_2')
-                                &.discount
-                                    bg-image('discount_2')
-                                &.guarantee
-                                    bg-image('guarantee_2')
-                                &.invoice
-                                    bg-image('invoice_2')
-                                &.special
-                                    bg-image('special_2')
                             .text
                                 font-size: 12px
                                 line-height: 16px
