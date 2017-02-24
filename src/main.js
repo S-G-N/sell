@@ -29,4 +29,4 @@ router.map({
 
 router.start(app, '#app');
 
-router.go('/seller');
+router.go('/goods');

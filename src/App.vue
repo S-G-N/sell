@@ -28,10 +28,8 @@
         created() {
             this.$http.get('/api/seller').then((res) => {
                 res = res.body;
-                console.log(res);
                 if (res.errno === ERR_OK) {
                     this.seller = res.data;
-                    console.log(this.seller);
                 }
             });
         },

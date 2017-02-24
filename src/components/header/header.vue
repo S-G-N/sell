@@ -2,7 +2,7 @@
     <div id="header">
         <div class="content-wrapper">
             <div class="avatar">
-                <img width="64" height="60" :src="seller.avatar" alt="">
+                <img width="64" height="64" :src="seller.avatar" alt="">
             </div>
             <div class="content">
                 <div class="title">

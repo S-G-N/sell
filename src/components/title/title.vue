@@ -1,5 +1,5 @@
 <template>
-    <div class="title">
+    <div id="title" track-by="$index">
         <div class="line"></div>
         <div class="text" >优惠信息</div>
         <div class="line"></div>
@@ -13,7 +13,7 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-    .title
+    #title
         display: flex
         width: 80%
         margin: 28px auto 24px auto
