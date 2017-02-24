@@ -1,19 +1,45 @@
 <template>
-    <div class="goods" >
+    <div class="goods">
         <div class="menu-wrapper">
             <ul>
-                <li v-for="item in goods">
+                <li v-for="item in goods" class="menu-item border-1px">
                     <span class="text">
-                        <span v-show="item.type>0"></span>
+                            <v-icon v-show="item.type>0" :size="12" :type="item.type"></v-icon>{{item.name}}
                     </span>
                 </li>
             </ul>
         </div>
-        <div class="foods-wrapper"></div>
+        <div class="foods-wrapper">
+            <ul>
+                <li v-for="item in goods" class="food-list">
+                    <h1 class="title">{{item.name}}</h1>
+                    <ul>
+                        <li v-for="food in item.foods" class="food-item">
+                            <div class="icon">
+                                <img width="57" height="57" :src="food.icon" alt="">
+                            </div>
+                            <div class="content">
+                                <h2 class="name">{{food.name}}</h2>
+                                <p v-show="food.description" class="desc">{{food.description}}</p>
+                                <div class="extra">
+                                    <span class="extra-sellCount">月售{{food.sellCount}}</span>
+                                    <span class="extra-rating">好评率{{food.rating}}</span>
+                                </div>
+                                <div class="price">
+                                    <span class="price-now">￥<span class="priceCount">{{food.price}}</span></span>
+                                    <span class="price-old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
+    import icon from '../../components/icon/icon';
     const ERR_OK = 0;
     export default {
         props: {
@@ -35,12 +61,16 @@
 //                    console.log(this.goods);
                 }
             });
+        },
+        components: {
+            'v-icon': icon
         }
     };
 
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+    @import "../../common/stylus/mixin.styl"
     .goods
         display: flex
         position: absolute
@@ -52,6 +82,76 @@
             flex: 0 0 80px
             width: 80px
             background: #f3f5f7
+            .menu-item
+                display: table
+                width: 56px
+                padding: 15px 0
+                margin-left: 12px
+                border-1px(rgba(7, 17, 21, 0.1))
+                .text
+                    vertical-align: top
+                    font-size: 12px
+                    font-weight: 200
+                    line-height: 14px
         .foods-wrapper
             flex: 1
+            .food-list
+                .title
+                    padding-left: 14px
+                    background: #f3f5f7
+                    height: 26px
+                    font-size: 12px
+                    color: rgb(147, 153, 159)
+                    border-left: 2px solid #d9dde1
+                    line-height: 26px
+                .food-item
+                    display: flex
+                    padding-bottom: 18px
+                    margin: 18px
+                    border-1px(rgba(7, 17, 21, 0.1))
+                    &:last-child
+                        border-1pxOFF()
+                        margin-bottom: 0
+                    .icon
+                        flex: 0 0 57px
+                        margin-right: 10px
+                    .content
+                        flex: 1
+                        .name
+                            font-size: 14px
+                            color: rgb(7, 17, 27)
+                            line-height: 14px
+                            margin-top: 2px
+                        .desc
+                            font-size: 10px
+                            color: rgb(147, 153, 159)
+                            line-height: 10px
+                            margin 8px 0
+                        .extra
+                            font-size: 0
+                            color: rgb(147, 153, 159)
+                            margin 8px 0
+                            .extra-sellCount
+                                font-size: 10px
+                                margin-right: 12px
+                                line-height: 10px
+                            .extra-rating
+                                font-size: 10px
+                                line-height: 10px
+
+
+                        .price
+                            font-size: 0
+                            vertical-align: top
+                            .price-now
+                                font-size: 10px
+                                color: red
+                                .priceCount
+                                    font-size: 14px
+                                    font-weight: 700
+                            .price-old
+                                font-size: 10px
+                                color: rgb(147, 153, 159)
+                                font-weight: 700
+
 </style>

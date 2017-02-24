@@ -7,7 +7,7 @@ type:icon type(number)[decrease, discount, guarantee, invoice, special]
 
 -->
 <template>
-    <span class="icon" :class="iconClass"></span>
+    <span class="icon" :class="iconClass" track-by="$index"></span>
 </template>
 <script type="text/ecmascript-6">
     export default {
@@ -36,7 +36,7 @@ type:icon type(number)[decrease, discount, guarantee, invoice, special]
         display: inline-block
         width: 12px
         height: 12px
-        margin-right: 4px
+        /*margin-right: 4px*/
         background-size: 12px 12px
         background-repeat: no-repeat
         vertical-align: top

@@ -1,7 +1,6 @@
 <template>
     <div id="header">
         <div class="content-wrapper">
-
             <div class="avatar">
                 <img width="64" height="64" :src="seller.avatar" alt="">
             </div>
@@ -133,6 +132,7 @@
                     .text
                         line-height: 12px
                         font-size 10px
+                        margin-left:4px;
 
             .support-count
                 position: absolute
