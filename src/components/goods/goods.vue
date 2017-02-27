@@ -1,17 +1,17 @@
 <template>
     <div class="goods">
-        <div class="menu-wrapper">
+        <div class="menu-wrapper" v-el=menu-wrapper>
             <ul>
-                <li v-for="item in goods" class="menu-item border-1px">
-                    <span class="text">
+                <li v-for="item in goods" class="menu-item" :class="{'current':currentIndex===$index}">
+                    <span class="text border-1px">
                             <v-icon v-show="item.type>0" :size="12" :type="item.type"></v-icon>{{item.name}}
                     </span>
                 </li>
             </ul>
         </div>
-        <div class="foods-wrapper">
+        <div class="foods-wrapper" v-el=foods-wrapper>
             <ul>
-                <li v-for="item in goods" class="food-list">
+                <li v-for="item in goods" class="food-list" :class="food-list-hook">
                     <h1 class="title">{{item.name}}</h1>
                     <ul>
                         <li v-for="food in item.foods" class="food-item">
@@ -29,6 +29,9 @@
                                     <span class="price-now">￥<span class="priceCount">{{food.price}}</span></span>
                                     <span class="price-old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                                 </div>
+                                <div class="cartcontrol-wrapper">
+                                    <v-cartcontrol :food="food"></v-cartcontrol>
+                                </div>
                             </div>
                         </li>
                     </ul>
@@ -40,6 +43,8 @@
 
 <script type="text/ecmascript-6">
     import icon from '../../components/icon/icon';
+    import cartControl from '../../components/cartControl/cartControl';
+    import BScroll from 'better-scroll';
     const ERR_OK = 0;
     export default {
         props: {
@@ -49,21 +54,64 @@
         },
         data(){
             return {
-                goods: []
+                goods: [],
+                listHeight: [],
+                scrollY: 0
             };
+        },
+        computed: {
+            currentIndex(){
+                console.log('currentIndex');
+                for (let i = 0; i < this.listHeight.length; i++) {
+                    let height1 = this.listHeight[i];
+                    let height2 = this.listHeight[i + 1];
+                    if (!height2 || (this.scrollY >= height1 && this.scrollY < height2)) {
+                        return i;
+                    }
+                }
+                return 0;
+            }
         },
         created(){
             this.$http.get('/api/goods').then((res) => {
                 res = res.body;
-//                console.log(res);
                 if (res.errno === ERR_OK) {
                     this.goods = res.data;
-//                    console.log(this.goods);
+                    this.$nextTick(() => {
+                        this._initScroll();
+                        this._calculateHeight();
+                    });
                 }
             });
         },
+        methods: {
+            _initScroll() {
+//                console.log(this.$el.querySelector('.menu-wrapper'));
+                this.menuScroll = new BScroll(this.$el.querySelector('.menu-wrapper'), {});
+                this.foodsScroll = new BScroll(this.$el.querySelector('.foods-wrapper'), {
+                    probeType: 3
+                });
+                this.foodsScroll.on('scroll', (pos) => {
+                    this.scrollY = Math.abs(Math.round(pos.y));
+//                    console.log(this.currentIndex);
+                });
+            },
+            _calculateHeight() {
+                let foodList = this.$el.getElementsByClassName('food-list-hook');
+                console.log(foodList);
+                let height = 0;
+                this.listHeight.push(height);
+                for (let i = 0; i < foodList.length; i++) {
+                    let item = foodList[i];
+                    height += item.clientHeight;
+                    this.listHeight.push(height);
+                    console.log(this.listHeight);
+                }
+            }
+        },
         components: {
-            'v-icon': icon
+            'v-icon': icon,
+            'v-cartcontrol': cartControl
         }
     };
 
@@ -85,11 +133,21 @@
             .menu-item
                 display: table
                 width: 56px
-                padding: 15px 0
-                margin-left: 12px
+                height:54px;
+                padding: 0px 12px
+                line-height: 14px
                 border-1px(rgba(7, 17, 21, 0.1))
+                &.current
+                    position: relative;
+                    margin-top: -1px
+                    background-color: #fff
+                    z-index:10
+                    font-weight: 700
+                    .text
+                        border-1pxOFF()
                 .text
-                    vertical-align: top
+                    display:table-cell
+                    vertical-align: middle
                     font-size: 12px
                     font-weight: 200
                     line-height: 14px
@@ -139,7 +197,6 @@
                                 font-size: 10px
                                 line-height: 10px
 
-
                         .price
                             font-size: 0
                             vertical-align: top
@@ -154,4 +211,8 @@
                                 color: rgb(147, 153, 159)
                                 font-weight: 700
 
+                        .cartcontrol-wrapper
+                            position absolute
+                            bottom: 12px
+                            right: 0
 </style>
