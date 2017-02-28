@@ -18,7 +18,7 @@
                     <span class="text">{{seller.supports[0].description}}</span>
                 </div>
             </div>
-            <div v-if="seller.supports" class="support-count">
+            <div tabindex="1" v-if="seller.supports" class="support-count">
                 <span class="count" @click="showDetail()">{{seller.supports.length}}个</span>
                 <i class="icon-keyboard_arrow_right"></i>
             </div>

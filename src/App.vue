@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-header :seller="seller"></v-header>
-        <div class="tab border-1px">
+        <div class="tab border-1px" v-el="aa">
             <div class="tab-item">
                 <a v-link="{path:'/goods'}">商品</a>
             </div>
@@ -12,7 +12,7 @@
                 <a v-link="{path:'/seller'}">商家</a>
             </div>
         </div>
-        <router-view></router-view>
+        <router-view :seller="seller"></router-view>
     </div>
 </template>
 
@@ -30,6 +30,7 @@
                 res = res.body;
                 if (res.errno === ERR_OK) {
                     this.seller = res.data;
+                    console.log(this.$el);
                 }
             });
         },
@@ -57,4 +58,6 @@
                 color: rgb(77, 85, 93)
                 &.focus
                     color: rgb(200, 85, 93)
+                    border: 3px solid rgb(200, 85, 93)
+                    box-sizing border-box
 </style>

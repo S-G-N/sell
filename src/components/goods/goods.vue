@@ -1,17 +1,18 @@
 <template>
     <div class="goods">
-        <div class="menu-wrapper" v-el=menu-wrapper>
+        <div class="menu-wrapper" v-el:menu-wrapper>
             <ul>
-                <li v-for="item in goods" class="menu-item" :class="{'current':currentIndex===$index}">
-                    <span class="text border-1px">
+                <li tabindex="1" v-for="item in goods" class="menu-item" :class="{'current':currentIndex===$index}"
+                    @click="selectMenu($index,$event)">
+                    <span class="text bordewr-1px">
                             <v-icon v-show="item.type>0" :size="12" :type="item.type"></v-icon>{{item.name}}
                     </span>
                 </li>
             </ul>
         </div>
-        <div class="foods-wrapper" v-el=foods-wrapper>
+        <div class="foods-wrapper" v-el:foods-wrapper>
             <ul>
-                <li v-for="item in goods" class="food-list" :class="food-list-hook">
+                <li v-for="item in goods" class="food-list food-list-hook">
                     <h1 class="title">{{item.name}}</h1>
                     <ul>
                         <li v-for="food in item.foods" class="food-item">
@@ -30,7 +31,7 @@
                                     <span class="price-old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                                 </div>
                                 <div class="cartcontrol-wrapper">
-                                    <v-cartcontrol :food="food"></v-cartcontrol>
+                                    <v-cart-control :food="food"></v-cart-control>
                                 </div>
                             </div>
                         </li>
@@ -38,11 +39,15 @@
                 </li>
             </ul>
         </div>
+        <div class="shop-cart-wrapper">
+            <v-shop-cart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></v-shop-cart>
+        </div>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
     import icon from '../../components/icon/icon';
+    import shopCart from '../../components/shopCart/shopCart';
     import cartControl from '../../components/cartControl/cartControl';
     import BScroll from 'better-scroll';
     const ERR_OK = 0;
@@ -85,10 +90,19 @@
             });
         },
         methods: {
+            selectMenu(index, event){
+                if (!event._constructed) {
+                    return;
+                }
+                let foodList = this.$els.foodsWrapper.getElementsByClassName('food-list-hook');
+                let el = foodList[index];
+                this.foodsScroll.scrollToElement(el, 300);
+            },
             _initScroll() {
-//                console.log(this.$el.querySelector('.menu-wrapper'));
-                this.menuScroll = new BScroll(this.$el.querySelector('.menu-wrapper'), {});
-                this.foodsScroll = new BScroll(this.$el.querySelector('.foods-wrapper'), {
+                this.menuScroll = new BScroll(this.$els.menuWrapper, {
+                    click: true
+                });
+                this.foodsScroll = new BScroll(this.$els.foodsWrapper, {
                     probeType: 3
                 });
                 this.foodsScroll.on('scroll', (pos) => {
@@ -97,7 +111,7 @@
                 });
             },
             _calculateHeight() {
-                let foodList = this.$el.getElementsByClassName('food-list-hook');
+                let foodList = this.$els.foodsWrapper.getElementsByClassName('food-list-hook');
                 console.log(foodList);
                 let height = 0;
                 this.listHeight.push(height);
@@ -111,7 +125,8 @@
         },
         components: {
             'v-icon': icon,
-            'v-cartcontrol': cartControl
+            'v-cart-control': cartControl,
+            'v-shop-cart': shopCart
         }
     };
 
@@ -133,24 +148,24 @@
             .menu-item
                 display: table
                 width: 56px
-                height:54px;
+                height: 54px;
                 padding: 0px 12px
                 line-height: 14px
-                border-1px(rgba(7, 17, 21, 0.1))
                 &.current
                     position: relative;
                     margin-top: -1px
                     background-color: #fff
-                    z-index:10
+                    z-index: 10
                     font-weight: 700
                     .text
                         border-1pxOFF()
                 .text
-                    display:table-cell
+                    display: table-cell
                     vertical-align: middle
                     font-size: 12px
                     font-weight: 200
                     line-height: 14px
+                    border-1px(rgba(7, 17, 21, 0.1))
         .foods-wrapper
             flex: 1
             .food-list
