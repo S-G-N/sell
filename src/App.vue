@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-header :seller="seller"></v-header>
-        <div class="tab border-1px" v-el="aa">
+        <div class="tab border-1px">
             <div class="tab-item">
                 <a v-link="{path:'/goods'}">商品</a>
             </div>
@@ -12,27 +12,149 @@
                 <a v-link="{path:'/seller'}">商家</a>
             </div>
         </div>
+        <!--<div id="da" v-el:da v-text="seller"></div>-->
         <router-view :seller="seller"></router-view>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
     import header from './components/header/header.vue';
-    const ERR_OK = 0;
+    //    import $ from 'jquery';
+    //            const ERR_OK = 0;
     export default {
         data(){
             return {
-                seller: {}
+                seller: {},
+//                {
+//                    'name': '粥品香坊（回龙观）',
+//                    'description': '蜂鸟专送',
+//                    'deliveryTime': 38,
+//                    'score': 4.2,
+//                    'serviceScore': 4.1,
+//                    'foodScore': 4.3,
+//                    'rankRate': 69.2,
+//                    'minPrice': 20,
+//                    'deliveryPrice': 4,
+//                    'ratingCount': 24,
+//                    'sellCount': 90,
+//                    'bulletin': '粥品香坊其烹饪粥料的秘方源于中国千年古法，在融和现代制作工艺，由世界烹饪大师屈浩先生领衔研发。坚守纯天然、0添加的良心品质深得消费者青睐，发展至今成为粥类的引领品牌。是2008年奥运会和2013年园博会指定餐饮服务商。',
+//                    'supports': [
+//                        {
+//                            'type': 0,
+//                            'description': '在线支付满28减5'
+//                        },
+//                        {
+//                            'type': 1,
+//                            'description': 'VC无限橙果汁全场8折'
+//                        },
+//                        {
+//                            'type': 2,
+//                            'description': '单人精彩套餐'
+//                        },
+//                        {
+//                            'type': 3,
+//                            'description': '该商家支持发票,请下单写好发票抬头'
+//                        },
+//                        {
+//                            'type': 4,
+//                            'description': '已加入“外卖保”计划,食品安全保障'
+//                        }
+//                    ],
+//                    'avatar': 'http://static.galileo.xiaojukeji.com/static/tms/seller_avatar_256px.jpg',
+//                    'pics': [
+//                        'http://fuss10.elemecdn.com/8/71/c5cf5715740998d5040dda6e66abfjpeg.jpeg?imageView2/1/w/180/h/180',
+//                        'http://fuss10.elemecdn.com/b/6c/75bd250e5ba69868f3b1178afbda3jpeg.jpeg?imageView2/1/w/180/h/180',
+//                        'http://fuss10.elemecdn.com/f/96/3d608c5811bc2d902fc9ab9a5baa7jpeg.jpeg?imageView2/1/w/180/h/180',
+//                        'http://fuss10.elemecdn.com/6/ad/779f8620ff49f701cd4c58f6448b6jpeg.jpeg?imageView2/1/w/180/h/180'
+//                    ],
+//                    'infos': [
+//                        '该商家支持发票,请下单写好发票抬头',
+//                        '品类:其他菜系,包子粥店',
+//                        '北京市昌平区回龙观西大街龙观置业大厦底商B座102单元1340',
+//                        '营业时间:10:00-20:30'
+//                    ]
+//                },
+                imgurl: {name: 'suguannan', age: 23}
             };
         },
         created() {
-            this.$http.get('/api/seller').then((res) => {
-                res = res.body;
-                if (res.errno === ERR_OK) {
-                    this.seller = res.data;
-                    console.log(this.$el);
-                }
-            });
+            this.seller = {
+                'name': '粥品香坊（回龙观）',
+                'description': '蜂鸟专送',
+                'deliveryTime': 38,
+                'score': 4.2,
+                'serviceScore': 4.1,
+                'foodScore': 4.3,
+                'rankRate': 69.2,
+                'minPrice': 20,
+                'deliveryPrice': 4,
+                'ratingCount': 24,
+                'sellCount': 90,
+                'bulletin': '粥品香坊其烹饪粥料的秘方源于中国千年古法，在融和现代制作工艺，由世界烹饪大师屈浩先生领衔研发。坚守纯天然、0添加的良心品质深得消费者青睐，发展至今成为粥类的引领品牌。是2008年奥运会和2013年园博会指定餐饮服务商。',
+                'supports': [
+                    {
+                        'type': 0,
+                        'description': '在线支付满28减5'
+                    },
+                    {
+                        'type': 1,
+                        'description': 'VC无限橙果汁全场8折'
+                    },
+                    {
+                        'type': 2,
+                        'description': '单人精彩套餐'
+                    },
+                    {
+                        'type': 3,
+                        'description': '该商家支持发票,请下单写好发票抬头'
+                    },
+                    {
+                        'type': 4,
+                        'description': '已加入“外卖保”计划,食品安全保障'
+                    }
+                ],
+                'avatar': 'http://static.galileo.xiaojukeji.com/static/tms/seller_avatar_256px.jpg',
+                'pics': [
+                    'http://fuss10.elemecdn.com/8/71/c5cf5715740998d5040dda6e66abfjpeg.jpeg?imageView2/1/w/180/h/180',
+                    'http://fuss10.elemecdn.com/b/6c/75bd250e5ba69868f3b1178afbda3jpeg.jpeg?imageView2/1/w/180/h/180',
+                    'http://fuss10.elemecdn.com/f/96/3d608c5811bc2d902fc9ab9a5baa7jpeg.jpeg?imageView2/1/w/180/h/180',
+                    'http://fuss10.elemecdn.com/6/ad/779f8620ff49f701cd4c58f6448b6jpeg.jpeg?imageView2/1/w/180/h/180'
+                ],
+                'infos': [
+                    '该商家支持发票,请下单写好发票抬头',
+                    '品类:其他菜系,包子粥店',
+                    '北京市昌平区回龙观西大街龙观置业大厦底商B座102单元1340',
+                    '营业时间:10:00-20:30'
+                ]
+            };
+//
+//            $.ajax({
+//                type: 'get',
+//                url: '/api/seller',
+//                success: function (data) {
+//                    console.log(data);
+//                    if (data.errno === 0) {
+//                        this.seller = data.data;
+//                    }
+//                    console.log(this.seller);
+//                }
+//            });
+//            this.$http.get('http://192.168.20.83:7000/data').then((res) => {
+//                console.log('请求服务器：');
+//                console.log(res.body);
+//                console.log(res.data);
+//            });
+//            this.$http.get('/api/seller').then((res) => {
+//                console.log('请求本地：');
+//                console.log(res);
+//                this.seller = res.body.data;
+//                console.log(this.seller);
+//                if (res.errno === ERR_OK) {
+//                    console.log(typeof res.data);
+//                    this.seller = res.data;
+//                    console.log(this.seller);
+//                }
+//            });
         },
         components: {
             'v-header': header
@@ -42,6 +164,14 @@
 
 <style lang="stylus" rel="stylesheet/stylus">
     @import "common/stylus/mixin.styl"
+    #da
+        position: absolute
+        top: 0
+        left: 0
+        z-index: 500;
+        width: 300px
+        height: 300px
+
     .tab
         display: flex
         width: 100%

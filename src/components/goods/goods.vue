@@ -40,7 +40,8 @@
             </ul>
         </div>
         <div class="shop-cart-wrapper">
-            <v-shop-cart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></v-shop-cart>
+            <v-shop-cart v-ref:shopcart :select-foods="sellectFoods" :delivery-price="seller.deliveryPrice"
+                         :min-price="seller.minPrice"></v-shop-cart>
         </div>
     </div>
 </template>
@@ -50,7 +51,8 @@
     import shopCart from '../../components/shopCart/shopCart';
     import cartControl from '../../components/cartControl/cartControl';
     import BScroll from 'better-scroll';
-    const ERR_OK = 0;
+    import $ from 'jquery';
+    //    const ERR_OK = 0;
     export default {
         props: {
             seller: {
@@ -66,7 +68,7 @@
         },
         computed: {
             currentIndex(){
-                console.log('currentIndex');
+//                console.log('currentIndex');
                 for (let i = 0; i < this.listHeight.length; i++) {
                     let height1 = this.listHeight[i];
                     let height2 = this.listHeight[i + 1];
@@ -75,21 +77,67 @@
                     }
                 }
                 return 0;
+            },
+            sellectFoods(){
+                let foods = [];
+                this.goods.forEach((good) => {
+                    good.foods.forEach((food) => {
+                        if (food.count) {
+                            foods.push(food);
+                        }
+                    });
+                });
+                return foods;
             }
         },
         created(){
-            this.$http.get('/api/goods').then((res) => {
-                res = res.body;
-                if (res.errno === ERR_OK) {
-                    this.goods = res.data;
-                    this.$nextTick(() => {
-                        this._initScroll();
-                        this._calculateHeight();
-                    });
+            /* eslint-disable no-unused-vars*/
+            console.log('wwwww');
+//            source code
+//            this.$http.get('/api/goods').then((res) => {
+//              console.log(res);
+//                res = res.body;
+//               console.log(res);
+//                if (res.errno === ERR_OK) {
+//                    console.log(res.data);
+//                    this.goods = res.data;
+//                    console.log(this.goods);
+//                    this.$nextTick(() => {
+//                        this._initScroll();
+//                        this._calculateHeight();
+//                    });
+//                }
+//            });
+//            test code1:jquery ajax
+            var vm = this;
+            $.ajax({
+                type: 'get',
+                url: 'http://192.168.20.83:7000',
+                success: function (data) {
+                    var res = JSON.parse(data);
+                    console.log(res.goods);
+                    var goods = res.goods;
+                    for (let i in goods) {
+                        vm.goods.$set(i, res.goods[i]);
+                    }
+                },
+                errror: function (err) {
+                    console.log(err);
                 }
             });
+//            test code1:vue ajax
+//            this.$http.options.emulateJSON = true;
+//            this.$http.get('http://192.168.20.83:7000').then((res) => {
+//                    console.log(res);
+//            });
+        },
+        http: {
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         },
         methods: {
+            _drop(target){
+                this.$refs.shopcart.drop(target);
+            },
             selectMenu(index, event){
                 if (!event._constructed) {
                     return;
@@ -103,6 +151,7 @@
                     click: true
                 });
                 this.foodsScroll = new BScroll(this.$els.foodsWrapper, {
+                    click: true,
                     probeType: 3
                 });
                 this.foodsScroll.on('scroll', (pos) => {
@@ -112,14 +161,14 @@
             },
             _calculateHeight() {
                 let foodList = this.$els.foodsWrapper.getElementsByClassName('food-list-hook');
-                console.log(foodList);
+//                console.log(foodList);
                 let height = 0;
                 this.listHeight.push(height);
                 for (let i = 0; i < foodList.length; i++) {
                     let item = foodList[i];
                     height += item.clientHeight;
                     this.listHeight.push(height);
-                    console.log(this.listHeight);
+//                    console.log(this.listHeight);
                 }
             }
         },
@@ -127,6 +176,11 @@
             'v-icon': icon,
             'v-cart-control': cartControl,
             'v-shop-cart': shopCart
+        },
+        events: {
+            'cart.add'(target){
+                this._drop(target);
+            }
         }
     };
 

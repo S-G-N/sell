@@ -1,6 +1,7 @@
 var path = require('path')
 var config = require('../config')
 var utils = require('./utils')
+var webpack = require("webpack")
 var projectRoot = path.resolve(__dirname, '../')
 
 module.exports = {
@@ -18,6 +19,7 @@ module.exports = {
     alias: {
       'src': path.resolve(__dirname, '../src'),
       'common': path.resolve(__dirname, '../src/common'),
+      'jquery': path.resolve(__dirname, '../node_modules/jquery/src/jquery'),
       'components': path.resolve(__dirname, '../src/components')
     }
   },
@@ -76,6 +78,14 @@ module.exports = {
       }
     ]
   },
+  // 增加一个plugins
+  plugins: [
+    new webpack.optimize.CommonsChunkPlugin('common.js'),
+    new webpack.ProvidePlugin({
+      jQuery: "jquery",
+      $: "jquery"
+    })
+  ],
   eslint: {
     formatter: require('eslint-friendly-formatter')
   },

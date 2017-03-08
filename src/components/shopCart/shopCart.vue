@@ -17,6 +17,13 @@
                 </div>
             </div>
         </div>
+        <div class="ball-container">
+            <div transition="drop" v-for="ball in balls" v-show="ball.show" class="ball">
+                <div class="inner inner-hook">
+
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -37,6 +44,28 @@
                 default: 0
             }
 
+        },
+        data(){
+            return {
+                balls: [
+                    {
+                        show: false
+                    },
+                    {
+                        show: false
+                    },
+                    {
+                        show: false
+                    },
+                    {
+                        show: false
+                    },
+                    {
+                        show: false
+                    }
+                ],
+                dropBalls: []
+            };
         },
         computed: {
             totalPrice(){
@@ -70,6 +99,63 @@
                     return 'enough';
                 }
             }
+        },
+        methods: {
+            drop(el){
+                console.log(el);
+                for (let i = 0; i < this.balls.length; i++) {
+                    let ball = this.balls[i];
+                    if (!ball.show) {
+                        ball.show = true;
+                        ball.el = el;
+                        this.dropBalls.push(ball);
+                        return;
+                    }
+                }
+            },
+            transition: {
+                drop: {
+                    beforEnter(el){
+                        console.log('drop');
+                        let count = this.balls.length;
+                        while (count--) {
+                            let ball = this.balls[count];
+                            if (ball.show) {
+                                let rect = ball.el.getBoundingClientRect();
+                                let x = rect.left - 32;
+                                let y = -(window.innerHeight - rect.top - 22);
+                                console.log(x, y);
+                                el.style.display = 'block';
+                                el.style.webkitTransform = `translated3d(0,${y}px,0)`;
+                                el.style.Transform = `translated3d(0,${y}px,0)`;
+                                let inner = el.getElementsByClassName('inner-hook')[0];
+                                inner.style.webkitTransform = `translated3d(0,${x}px,0)`;
+                                inner.style.Transform = `translated3d(0,${x}px,0)`;
+                            }
+                        }
+                    },
+                    enter(el){
+                        /* eslint-disable no-unused-vars*/
+//                        let rf = el.offsetHeight;
+                        this.$nextTick(() => {
+                            el.style.webkitTransform = 'translated3D(0,0,0)';
+                            el.style.Transform = 'translated3D(0,0,0)';
+                            let inner = el.getElementsByClassName('inner-hook')[0];
+                            inner.style.webkitTransform = 'translated3D(0,0,0)';
+                            inner.style.Transform = 'translated3D(0,0,0)';
+                        });
+                    },
+                    afterEnter(el){
+                        let ball = this.dropBalls.shift();
+                        if (ball) {
+                            ball.show = false;
+                            el.style.display = 'none';
+                        }
+                    }
+
+                }
+            }
+
         }
     };
 </script>
@@ -147,7 +233,6 @@
                     line-height: 24px
                     margin: 12px 0 0 12px
                     font-size: 10px
-
             .content-right
                 flex: 0 0 105
                 width: 105px
@@ -161,6 +246,18 @@
                     &.enough
                         background: #00b43c
                         color: #fff
-
-
+        .ball-container
+            .ball
+                position: fixed
+                left: 32px
+                bottom: 32px
+                z-index: 200
+                &.drop-transition
+                    transition: all 0.4s
+                    .inner
+                        width: 16px
+                        height: 16px
+                        border-radius: 50%
+                        background: rgb(0, 220, 160)
+                        transition: all 0.4s
 </style>
