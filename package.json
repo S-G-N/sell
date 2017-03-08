@@ -16,7 +16,10 @@
     "vue-resource": "^1.0.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^2.5.0",
-    "vue": "^1.0.21"
+    "vue": "^1.0.21",
+    "better-scroll": "^0.1.7",
+    "jquery" : "^2.2.3"
+
   },
   "devDependencies": {
     "babel-core": "^6.0.0",
